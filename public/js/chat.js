@@ -2,6 +2,7 @@ function createUserMessage(payload) {
   var msgUser = payload.user;
   var msgText = payload.message;
   var msgTS = payload.ts;
+  var beritaText = payload.isiberita;
   var msgMoment = moment(msgTS).format("HH:mm:ss a");
   var msgType = payload.type;
   var msgPos = payload.position || !(payload.user == "Pengguna");
@@ -10,7 +11,7 @@ function createUserMessage(payload) {
   userImg.setAttribute("class", "img-circle");
   userImg.setAttribute("alt", "User Avatar");
   if (!msgPos) userImg.setAttribute("src", "img/client.png");
-  else userImg.setAttribute("src", "img/iconkurs.png");
+  else userImg.setAttribute("src", "img/iconberita.png");
 
   var chatImg = document.createElement("span");
   if (!msgPos) chatImg.setAttribute("class", "chat-img pull-left");
@@ -18,6 +19,11 @@ function createUserMessage(payload) {
   chatImg.appendChild(userImg);
 
   var msgTxt = document.createElement("p");
+
+  var ul = document.createElement("ul");
+  ul.className = "ulbtn";
+
+  var divul = document.createElement("div");
 
   if (msgType == "audio") {
     var msgAudio = document.createElement("audio");
@@ -30,7 +36,14 @@ function createUserMessage(payload) {
     // var message = document.createTextNode(msgText);
     msgTxt.innerHTML = msgText;
     // msgTxt.appendChild(message);
+    ul.setAttribute("id", "proList");
+    divul.appendChild(ul);
 
+    if (!beritaText == undefined || !beritaText == "") {
+      // hisTxt.innerHTML = "Histori";
+      beritaText.forEach(renderProductList);
+    } else {
+    }
     // console.log("Isi options", isiOptionText);
   }
 
@@ -50,6 +63,9 @@ function createUserMessage(payload) {
     msgBox.appendChild(msgTxt);
 
     // productList.forEach(renderProductList);
+    if (!beritaText == undefined || !beritaText == "") {
+    }
+    msgBox.appendChild(divul);
     msgBox.appendChild(msgTime);
   }
 
@@ -63,6 +79,54 @@ function createUserMessage(payload) {
   var chatList = document.querySelector("ul");
   chatList.appendChild(chatBox);
   chatArea.scrollTop = chatArea.scrollHeight;
+
+  function renderProductList(element, msg, index, arr) {
+    // var li = document.createElement("li");
+    // li.setAttribute("id", "myLi");
+
+    // ul.appendChild(li);
+
+    // var t = document.createTextNode(element);
+
+    // li.innerHTML = li.innerHTML + element;
+
+    var li = document.createElement("li");
+    // li.appendChild(document.createTextNode(element));
+    li.innerHTML =
+      "<img src=" +
+      element.urlToImage +
+      " />" +
+      "<br>" +
+      element.title +
+      "<br><br>" +
+      element.description +
+      "<a href=" +
+      element.url +
+      ">&nbsp Baca Selengkapnya</a>";
+    // var button = document.createElement("button");
+    // console.log("Element", element);
+    // button.innerHTML = element.desc;
+
+    // button.onclick = function () {
+    //   // alert(element.value.input.text);
+
+    //   var payload = {
+    //     user: "Pengguna",
+    //     message: element.value.input.text,
+    //     ts: new Date().getTime(),
+    //   };
+
+    //   createUserMessage(payload);
+    //   socket.emit("sendmsg", payload);
+    //   message.value = "";
+    //   return false;
+    // };
+    // // li.appendChild(button);
+    // li.setAttribute("id", element);
+    ul.appendChild(li);
+    // button.className = "btn";
+    li.className = "listbtn";
+  }
 }
 
 var socket = io("/");

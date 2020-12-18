@@ -46,29 +46,18 @@ io.on("connection", function (socket) {
 
         if (res.result.output.generic.length <= 1) {
           conversation_response = res.result.output.generic[0].text;
-          // It's a text response, so we just display it.
-          // case "option":
-          //   // It's an option response, so we'll need to show the user
-          //   // a list of choices.
-          //   conversation_response = res.result.output.generic[0].title;
-          //   desc_response = res.result.output.generic[0].description;
-          //   options_response = res.result.output.generic[0].options;
-          //   // List the options by label.
-          //   for (let i = 0; i < options_response.length; i++) {
-          //     console.log(
-          //       (i + 1).toString() + ". " + options_response[i].label
-          //     );
-          //   }
-          //   break;
-          // if (Array.isArray(res.result.output.generic))
-          //   conversation_response = res.result.output.generic[0].title;
-          // //.join(' ').trim();
+          obj = "";
+        } else if (res.result.output.generic.length > 1) {
+          conversation_response = res.result.output.generic[0].text;
+          conversation_response2 = res.result.output.generic[1].text;
 
-          // if (conversation_response) {
+          obj = JSON.parse(conversation_response2);
+          // console.log("Objek", obj);
         }
         var payload = {
-          user: "Bot Cek Kurs Mata Uang",
+          user: "Bot Berita",
           message: conversation_response,
+          isiberita: obj,
           ts: new Date().getTime(),
           type: res.result.output.generic[0].response_type,
         };
